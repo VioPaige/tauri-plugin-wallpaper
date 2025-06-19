@@ -1,8 +1,8 @@
 use windows::{
     core::{s, BOOL},
     Win32::{
-        Foundation::{HWND, LPARAM, WPARAM},
-        UI::WindowsAndMessaging,
+        Foundation::{HWND, LPARAM, WPARAM, RECT},
+        UI::WindowsAndMessaging
     },
 };
 
@@ -68,6 +68,24 @@ pub fn attach<R: tauri::Runtime>(webview_window: tauri::WebviewWindow<R>) -> cra
         }
 
         WindowsAndMessaging::SetParent(hwnd, Some(worker_w)).unwrap();
+
+        let left = WindowsAndMessaging::GetSystemMetrics(WindowsAndMessaging::SM_XVIRTUALSCREEN);
+        let top = WindowsAndMessaging::GetSystemMetrics(WindowsAndMessaging::SM_YVIRTUALSCREEN);
+        let width = WindowsAndMessaging::GetSystemMetrics(WindowsAndMessaging::SM_CXVIRTUALSCREEN);
+        let height = WindowsAndMessaging::GetSystemMetrics(WindowsAndMessaging::SM_CYVIRTUALSCREEN);
+        
+        let mut rectworker = RECT::default();
+        WindowsAndMessaging::GetWindowRect(worker_w, &mut rectworker).unwrap();
+
+        WindowsAndMessaging::SetWindowPos(
+            hwnd,
+            None,
+            left - rectworker.left,
+            top - rectworker.top,
+            width,
+            height,
+            WindowsAndMessaging::SWP_NOZORDER
+        ).unwrap();
     }
 
     Ok(())

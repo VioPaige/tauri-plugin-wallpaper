@@ -1,3 +1,7 @@
+# !! Notice !!
+**This is a fork that does not fully correspond to the original functionality of the tauri-plugin-wallpaper crate. It is customised for slightly different needs.**
+Attaching a window in this version makes it span across the entire virtual desktop, as after many many hours of experimenting, figuring out positioning when parent windows are in play in the windows api is a nightmare. In the app implementation of apps that use this the real positioning should simply happen within the frontend.
+
 # Tauri Plugin Wallpaper (✨)
 
 > A Tauri plugin to set your window as wallpaper behind desktop icons
